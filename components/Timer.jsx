@@ -1,10 +1,39 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Text, View, StyleSheet } from "react-native";
 import theme from "../styles/Styles";
 import SubstanceEmoji from "./SubstanceEmoji";
 
-function Timer() {
+const formatNumber = (number) => `0${number}`.slice(-2);
+
+const getRemaining = (totalSeconds) => {
+  const hours = Math.floor(totalSeconds / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = totalSeconds % 60;
+  return {
+    hours: formatNumber(hours),
+    minutes: formatNumber(minutes),
+    seconds: formatNumber(seconds),
+  };
+};
+
+function Timer({ tripStarted, secondsElapsed, setSecondsElapsed }) {
   const letterSpacingValue = 9;
+
+  
+
+  useEffect(() => {
+    let interval;
+    if (tripStarted) {
+      interval = setInterval(() => {
+        setSecondsElapsed((prevSeconds) => prevSeconds + 1);
+      }, 1000);
+    }
+
+    return () => interval && clearInterval(interval);
+  }, [tripStarted]);
+
+  const { hours, minutes, seconds } = getRemaining(secondsElapsed);
+
   return (
     <View style={{ ...theme.containerCenter, flex: 1 }}>
       <SubstanceEmoji substanceEmoji="💊" />
@@ -26,7 +55,7 @@ function Timer() {
           textAlign: "center",
         }}
       >
-        00 : 00 : 00
+        {hours} : {minutes} : {seconds}
       </Text>
       <Text
         style={{
