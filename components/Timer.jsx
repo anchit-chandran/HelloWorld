@@ -6,7 +6,7 @@ import SubstanceEmoji from "./SubstanceEmoji";
 function Timer() {
   const letterSpacingValue = 9;
   return (
-    <View style={{ ...theme.containerCenter, marginBottom: 200 }}>
+    <View style={{ ...theme.containerCenter, flex: 1 }}>
       <SubstanceEmoji substanceEmoji="💊" />
       <Text
         style={{
